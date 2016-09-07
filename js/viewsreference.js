@@ -34,40 +34,4 @@
     return false;
   }
 
-//  Drupal.behaviors.viewsReference = {
-//    attach: function (context, settings) {
-//      // Show display id field after autocomplete
-//
-//      var autocomplete_field = jQuery('.js-form-type-entity-autocomplete input');
-//      var select_field = jQuery('.js-form-type-entity-autocomplete select');
-//
-//      autocomplete_field.on('autocomplete-select', function() {
-//        var target = $(this).val();
-//        //var target_id = target.replace('#\((.*?)\)#');
-//        var start_pos = target.indexOf('(') + 1;
-//        var end_pos = target.indexOf(')',start_pos);
-//        var target_id = target.substring(start_pos,end_pos)
-//        console.log(target_id);
-//        var selectOptions = Drupal.ajax({
-//          base: select_field.attr('id'),
-//          element: select_field.$,
-//          url: Drupal.url('viewsreference/ajax/' + target_id ),
-//          progress: {type: 'throbber'},
-//          // Use a custom event to trigger the call.
-//          event: 'views_reference_event'
-//        });
-////        selectOptions.options.complete = function () {
-//////          self.$('.ipe-category-picker-top .ipe-icon-loading').remove();
-////
-////          self.setFormMaxHeight();
-////
-//////          self.$('.ipe-category-picker-top *').hide().fadeIn();
-////        };
-//        selectOptions.execute();
-//
-//      })
-//
-//    }
-//  };
-
 })(jQuery, drupalSettings);

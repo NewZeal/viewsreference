@@ -64,8 +64,14 @@ class ViewsReferenceWidget extends EntityReferenceAutocompleteWidget {
       ),
     );
 
-    $options = $this->getAllViewsDisplayIds();
+
     $default_value = isset($items[$delta]->getValue()['display_id']) ? $items[$delta]->getValue()['display_id'] : '';
+    if ($default_value == '') {
+      $options = $this->getAllViewsDisplayIds();
+    }
+    else {
+      $options = $this->getViewDisplayIds($items[$delta]->getValue()['target_id']);
+    }
 
     $element['display_id'] = array(
       '#title' => 'Display Id',
@@ -73,6 +79,18 @@ class ViewsReferenceWidget extends EntityReferenceAutocompleteWidget {
       '#options' => $options,
       '#default_value' => $default_value,
       '#weight' => 10,
+      '#states' => array(
+        'visible' => array(
+          ':input[name="' . $name . '"]' => array('filled' => TRUE),
+        ),
+      ),
+    );
+
+    $element['argument'] = array(
+      '#title' => 'Argument',
+      '#type' => 'textfield',
+      '#default_value' => isset($items[$delta]->getValue()['argument']) ? $items[$delta]->getValue()['argument'] : '',
+      '#weight' => 20,
       '#states' => array(
         'visible' => array(
           ':input[name="' . $name . '"]' => array('filled' => TRUE),

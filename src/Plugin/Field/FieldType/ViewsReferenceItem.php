@@ -68,7 +68,10 @@ PreconfiguredFieldUiOptionsInterface {
     $properties['display_id'] = DataDefinition::create('string')
       ->setLabel(new TranslatableMarkup('Display Id'))
       ->setDescription(new TranslatableMarkup('The referenced display Id'));
-      // The entity object is computed out of the entity ID.
+
+    $properties['argument'] = DataDefinition::create('string')
+      ->setLabel(new TranslatableMarkup('Argument'))
+      ->setDescription(new TranslatableMarkup('An optional argument or contextual filter to apply to the View'));
 
     return $properties;
   }
@@ -94,6 +97,12 @@ PreconfiguredFieldUiOptionsInterface {
       // If the target entities act as bundles for another entity type,
       // their IDs should not exceed the maximum length for bundles.
       'length' => $target_type_info->getBundleOf() ? EntityTypeInterface::BUNDLE_MAX_LENGTH : 255,
+    );
+
+    $schema['columns']['argument'] = array(
+      'description' => 'An optional argument.',
+      'type' => 'varchar_ascii',
+      'length' => 255
     );
 
     $schema['indexes']['display_id'] = array('display_id');

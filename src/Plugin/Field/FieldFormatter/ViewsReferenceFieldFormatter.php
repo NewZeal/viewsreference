@@ -64,7 +64,15 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
     foreach ($items as $delta => $item) {
       $view_name = $item->getValue()['target_id'];
       $display_id = $item->getValue()['display_id'];
-      $view = views_embed_view($view_name, $display_id);
+      $argument = $item->getValue()['argument'];
+
+      if ($argument != '') {
+        $view = views_embed_view($view_name, $display_id, $argument);
+      }
+      else {
+        $view = views_embed_view($view_name, $display_id);
+      }
+
       if ($this->getSetting('render_view')) {
 
         $elements[$delta] = array(
