@@ -73,12 +73,23 @@ class ViewsReferenceWidget extends EntityReferenceAutocompleteWidget {
       $options = $this->getViewDisplayIds($items[$delta]->getValue()['target_id']);
     }
 
+    // We build a unique class name from field elements and any parent elements that might exist
+    // Which will be used to render the display id options in our ajax function
+    $class = !empty($element['target_id']['#field_parents']) ? implode('-',
+      $element['target_id']['#field_parents']) . '-' : '';
+    $class .= $field_name  . '-' . $delta . '-display-id';
+
     $element['display_id'] = array(
       '#title' => 'Display Id',
       '#type' => 'select',
       '#options' => $options,
       '#default_value' => $default_value,
       '#weight' => 10,
+      '#attributes' => array(
+        'class' => array(
+          $class
+        )
+      ),
       '#states' => array(
         'visible' => array(
           ':input[name="' . $name . '"]' => array('filled' => TRUE),
@@ -109,25 +120,56 @@ class ViewsReferenceWidget extends EntityReferenceAutocompleteWidget {
   public function getDisplayIds(array &$form, FormStateInterface $form_state) {
     $trigger = $form_state->getTriggeringElement();
     $delta = $trigger['#delta'];
-    $id = $trigger['#id'];
     $field_name = $trigger['#parents'][0];
     $values = $form_state->getValues();
-    $entity_id = $values[$field_name][$delta]['target_id'];
+    $parents = $trigger['#parents'];
+    array_shift($parents);
+
+    // Get the value for the target id of the View
+    $entity_id = $this->getEntityId($values[$field_name], $parents);
+    // The following is relevant if our field is nested inside other fields, eg paragraph or field collection
+    if (count($parents) > 2) {
+      $field_name = $parents[count($parents)-3];
+    }
+
+    // Obtain the display ids for the given View
     $options = $this->getViewDisplayIds($entity_id);
+    // We recreate the same unique class as in the parent function
+    $class = !empty($trigger['#field_parents']) ? implode('-',
+        $trigger['#field_parents']) . '-' : '';
+    $element_class = '.' . $class . $field_name  . '-' . $delta .
+      '-display-id';
 
-    $element_id = '#edit-' . str_replace('_', '-', $field_name) . '-' . $delta . '-display-id';
-
-    // Drupal adds a div when sending ungrouped elements to the DOM, so we group using optgroup
+    // Construct the html
     $html = '<optgroup>';
     foreach ($options as $key => $option) {
       $html .= '<option value="' . $key . '">' . $option . '</option>';
     }
     $html .= '</optgroup>';
     $response = new AjaxResponse();
-    $response->addCommand(new HtmlCommand($element_id, render($html)));
+    $response->addCommand(new HtmlCommand($element_class, render($html)));
     return $response;
   }
 
+  /**
+   * Helper function to get the current entity_id value from the values array based on parent array
+   *
+   * @param $values
+   * @param $parents
+   * @return array|bool
+   */
+  protected function getEntityId($values, $parents) {
+    $key = array_shift($parents);
+    \Drupal::logger('plupload_gallery')->notice('get key <pre>' . print_r($key,1));
+    $values = $values[$key];
+    \Drupal::logger('plupload_gallery')->notice('get parents <pre>' . print_r($parents,1));
+    \Drupal::logger('plupload_gallery')->notice('get values <pre>' . print_r($values,1));
+    if (is_array($values)) {
+      $values = $this->getEntityId($values, $parents);
+    }
+    return $values;
+
+  }
   /**
    * Helper function to get all display ids
    */

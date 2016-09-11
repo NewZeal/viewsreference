@@ -65,7 +65,6 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
       $view_name = $item->getValue()['target_id'];
       $display_id = $item->getValue()['display_id'];
       $argument = $item->getValue()['argument'];
-
       if ($argument != '') {
         $view = views_embed_view($view_name, $display_id, $argument);
       }
