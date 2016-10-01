@@ -65,27 +65,40 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
       $view_name = $item->getValue()['target_id'];
       $display_id = $item->getValue()['display_id'];
       $argument = $item->getValue()['argument'];
+      $title = $item->getValue()['title'];
+      $viewObj = \Drupal\views\Views::getView($view_name);
+      // Someone may have deleted the View
+      if (!is_object($viewObj)) {
+        continue;
+      }
+      $viewObj->setDisplay($display_id);
+
       if ($argument != '') {
-        $view = views_embed_view($view_name, $display_id, $argument);
-      }
-      else {
-        $view = views_embed_view($view_name, $display_id);
+        $viewObj->setArguments(array($argument));
       }
 
+      if ($title) {
+        $title = $viewObj->getTitle();
+        $title_render_array = [
+          '#markup' => t('@title', ['@title'=> $title]),
+          '#allowed_tags' => ['h2'],
+          '#attributes' => array(
+            'class' => array('view-title')
+          )
+        ];
+      }
+      $viewObj->build($display_id);
+      $viewObj->execute($display_id);
+      $result = $viewObj->result;
+      $render = $viewObj->render();
       if ($this->getSetting('render_view')) {
-
-        $elements[$delta] = array(
-          '#markup' => render($view),
-          // todo what cache shall we use?
-          '#cache' => array(
-//              'tags' => $user->getCacheTags(),
-          ),
-        );
-
+        if ($title && !empty($result)) {
+          $elements[$delta]['title'] = $title_render_array;
         }
+        $elements[$delta]['contents'] = $render;
       }
 
-
+    }
     return $elements;
   }
 

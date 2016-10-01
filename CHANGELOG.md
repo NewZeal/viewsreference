@@ -8,4 +8,8 @@ Supply display_id defaults properly on edit
 Add Views argument
 
 8.x-1.0-alpha3
-Modify widget to it works in nested environments such as inside Paragraphs
+Modify widget so it works in nested environments such as inside Paragraphs
+
+8.x-1.0-alpha4
+Add views block title option
+Add check in update for table exists

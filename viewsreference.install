@@ -22,10 +22,16 @@ function viewsreference_update_8100() {
           $schema = $definition->getSchema();
           $id = $definition->id();
           $table = str_replace('.', '__', $id);
-          db_add_field($table, $field_name . '_argument', $schema['columns']['argument']);
+          if (!db_field_exists($table, $field_name . '_argument')) {
+            db_add_field($table, $field_name . '_argument', $schema['columns']['argument']);
+          }
+
           if ($type == 'node') {
             $table = 'node_revision__' . $field_name;
-            db_add_field($table, $field_name . '_argument', $schema['columns']['argument']);
+            if (!db_field_exists($table, $field_name . '_argument')) {
+              db_add_field($table, $field_name . '_argument', $schema['columns']['argument']);
+            }
+
           }
 
         }

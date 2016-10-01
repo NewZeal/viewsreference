@@ -109,6 +109,18 @@ class ViewsReferenceWidget extends EntityReferenceAutocompleteWidget {
       ),
     );
 
+    $element['title'] = array(
+      '#title' => 'Include View Title',
+      '#type' => 'checkbox',
+      '#default_value' => isset($items[$delta]->getValue()['title']) ? $items[$delta]->getValue()['title'] : '',
+      '#weight' => 21,
+      '#states' => array(
+        'visible' => array(
+          ':input[name="' . $name . '"]' => array('filled' => TRUE),
+        ),
+      ),
+    );
+
     $element['#attached']['library'][] = 'viewsreference/viewsreference';
 
     return $element;

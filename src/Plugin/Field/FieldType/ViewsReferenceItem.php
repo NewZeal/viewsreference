@@ -73,6 +73,10 @@ PreconfiguredFieldUiOptionsInterface {
       ->setLabel(new TranslatableMarkup('Argument'))
       ->setDescription(new TranslatableMarkup('An optional argument or contextual filter to apply to the View'));
 
+    $properties['title'] = DataDefinition::create('string')
+      ->setLabel(new TranslatableMarkup('Title'))
+      ->setDescription(new TranslatableMarkup('Whether or not to include the View or Block title'));
+
     return $properties;
   }
 
@@ -103,6 +107,12 @@ PreconfiguredFieldUiOptionsInterface {
       'description' => 'An optional argument.',
       'type' => 'varchar_ascii',
       'length' => 255
+    );
+
+    $schema['columns']['title'] = array(
+      'description' => 'Include title.',
+      'type' => 'int',
+      'length' => 11
     );
 
     $schema['indexes']['display_id'] = array('display_id');
