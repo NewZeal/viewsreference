@@ -66,39 +66,37 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
       $display_id = $item->getValue()['display_id'];
       $argument = $item->getValue()['argument'];
       $title = $item->getValue()['title'];
-      $viewObj = \Drupal\views\Views::getView($view_name);
-      // Someone may have deleted the View
-      if (!is_object($viewObj)) {
+      $view = \Drupal\views\Views::getView($view_name);
+      // Someone may have deleted the View or the user may not have access
+      if (!is_object($view) || !$view->access()) {
         continue;
       }
-      $viewObj->setDisplay($display_id);
-
+      // Todo also apply check in case someone deleted the display id
+      $view->setDisplay($display_id);
+      
       if ($argument != '') {
-        $viewObj->setArguments(array($argument));
+        $view->setArguments(array($argument));
       }
 
       if ($title) {
-        $title = $viewObj->getTitle();
-        $title_render_array = [
-          '#markup' => t('@title', ['@title'=> $title]),
-          '#allowed_tags' => ['h2'],
-          '#attributes' => array(
-            'class' => array('view-title')
-          )
-        ];
+        $title = $view->getTitle();
+        $title_render_array = array(
+          '#markup' => '<div class="viewsreference-title">' . t('@title', ['@title'=> $title]) . '</div>'
+        );
       }
-      $viewObj->build($display_id);
-      $viewObj->execute($display_id);
-      $result = $viewObj->result;
-      $render = $viewObj->render();
+      $view->build($display_id);
+      $view->execute($display_id);
+      $result = $view->result;
+      $render = $view->render();
+      $render['#view']->setTitle($title);
       if ($this->getSetting('render_view')) {
         if ($title && !empty($result)) {
           $elements[$delta]['title'] = $title_render_array;
         }
         $elements[$delta]['contents'] = $render;
       }
-
     }
+
     return $elements;
   }
 

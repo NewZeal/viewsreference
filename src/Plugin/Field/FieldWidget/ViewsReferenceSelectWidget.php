@@ -2,68 +2,43 @@
 
 namespace Drupal\viewsreference\Plugin\Field\FieldWidget;
 
-use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\Form\FormStateInterface;
-use Symfony\Component\Validator\ConstraintViolationInterface;
-use Drupal\Core\Field\Plugin\Field\FieldWidget\EntityReferenceAutocompleteWidget;
 use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\InsertCommand;
 use Drupal\Core\Ajax\HtmlCommand;
+use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsSelectWidget;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Plugin implementation of the 'entity_reference_autocomplete' widget.
+ * Plugin implementation of the 'options_select' widget.
  *
  * @FieldWidget(
- *   id = "viewsreference_autocomplete",
- *   label = @Translation("Views Reference Autocomplete"),
- *   description = @Translation("An autocomplete views reference field."),
+ *   id = "viewsreference_select",
+ *   label = @Translation("Views Reference Select list"),
+ *   description = @Translation("An autocomplete views select list field."),
  *   field_types = {
  *     "viewsreference"
  *   }
  * )
  */
-class ViewsReferenceWidget extends EntityReferenceAutocompleteWidget {
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function defaultSettings() {
-    return parent::defaultSettings();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function settingsForm(array $form, FormStateInterface $form_state) {
-    return parent::settingsForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function settingsSummary() {
-    return parent::settingsSummary();
-  }
+class ViewsReferenceSelectWidget extends OptionsSelectWidget {
 
   /**
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    $element = parent::formElement($items, $delta, $element, $form, $form_state);
+    $select_element['target_id'] = parent::formElement($items, $delta, $element, $form, $form_state);
     $field_name = $items->getName();
-    $name = $field_name . '[' . $delta . '][target_id]';
+    $name = $field_name . '[' . $delta . '][0]';
 
-    $element['target_id']['#target_type'] = 'view';
-
-    $element['target_id']['#ajax'] = array(
+    $select_element['target_id']['#target_type'] = 'view';
+    $select_element['target_id']['#ajax'] = array(
       'callback' => array($this, 'getDisplayIds'),
-      'event' => 'viewsreference-select',
+      'event' => 'change',
       'progress' => array(
         'type' => 'throbber',
         'message' => t('Getting display Ids...'),
       ),
     );
-
 
     $default_value = isset($items[$delta]->getValue()['display_id']) ? $items[$delta]->getValue()['display_id'] : '';
     if ($default_value == '') {
@@ -73,13 +48,13 @@ class ViewsReferenceWidget extends EntityReferenceAutocompleteWidget {
       $options = $this->getViewDisplayIds($items[$delta]->getValue()['target_id']);
     }
 
-    // We build a unique class name from field elements and any parent elements that might exist
-    // Which will be used to render the display id options in our ajax function
-    $class = !empty($element['target_id']['#field_parents']) ? implode('-',
-      $element['target_id']['#field_parents']) . '-' : '';
+    // We build a unique class name from field elements and any parent elements
+    // that might exist which will be used to render the display id options in
+    // our ajax function.
+    $class = !empty($element['target_id']['#field_parents']) ? implode('-', $element['target_id']['#field_parents']) . '-' : '';
     $class .= $field_name  . '-' . $delta . '-display-id';
 
-    $element['display_id'] = array(
+    $select_element['display_id'] = array(
       '#title' => 'Display Id',
       '#type' => 'select',
       '#options' => $options,
@@ -92,39 +67,42 @@ class ViewsReferenceWidget extends EntityReferenceAutocompleteWidget {
       ),
       '#states' => array(
         'visible' => array(
-          ':input[name="' . $name . '"]' => array('filled' => TRUE),
+          ':input[name="' . $name . '"]' => array('!value' => '_none'),
         ),
       ),
     );
 
-    $element['argument'] = array(
+    $select_element['argument'] = array(
       '#title' => 'Argument',
       '#type' => 'textfield',
       '#default_value' => isset($items[$delta]->getValue()['argument']) ? $items[$delta]->getValue()['argument'] : '',
       '#weight' => 20,
       '#states' => array(
         'visible' => array(
-          ':input[name="' . $name . '"]' => array('filled' => TRUE),
+          ':input[name="' . $name . '"]' => array('!value' => '_none'),
         ),
       ),
     );
 
-    $element['title'] = array(
+    $select_element['title'] = array(
       '#title' => 'Include View Title',
       '#type' => 'checkbox',
       '#default_value' => isset($items[$delta]->getValue()['title']) ? $items[$delta]->getValue()['title'] : '',
       '#weight' => 21,
       '#states' => array(
         'visible' => array(
-          ':input[name="' . $name . '"]' => array('filled' => TRUE),
+          ':input[name="' . $name . '"]' => array('!value' => '_none'),
         ),
       ),
     );
 
-    $element['#attached']['library'][] = 'viewsreference/viewsreference';
+//    $select_element['target_id']['#element_validate'][] = array(get_class($this), 'validateElement');
+    $select_element['#attached']['library'][] = 'viewsreference/viewsreference';
 
-    return $element;
+    return $select_element;
   }
+
+//  public static function validateElement(array $element, FormStateInterface $form_state) {}
 
   /**
    *  AJAX function to get display IDs for a particular View
@@ -172,13 +150,17 @@ class ViewsReferenceWidget extends EntityReferenceAutocompleteWidget {
    */
   protected function getEntityId($values, $parents) {
     $key = array_shift($parents);
+    \Drupal::logger('viewsreference')->notice('get key <pre>' . print_r($key,1));
     $values = $values[$key];
+    \Drupal::logger('viewsreference')->notice('get parents <pre>' . print_r($parents,1));
+    \Drupal::logger('viewsreference')->notice('get values <pre>' . print_r($values,1));
     if (is_array($values)) {
       $values = $this->getEntityId($values, $parents);
     }
     return $values;
 
   }
+
   /**
    * Helper function to get all display ids
    */
@@ -208,20 +190,5 @@ class ViewsReferenceWidget extends EntityReferenceAutocompleteWidget {
     }
     return $options;
   }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function errorElement(array $element, ConstraintViolationInterface $error, array $form, FormStateInterface $form_state) {
-    return isset($element['display_id']) ? $element['display_id'] : FALSE;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
-    return parent::massageFormValues($values, $form, $form_state);
-  }
-
 
 }

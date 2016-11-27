@@ -13,3 +13,11 @@ Modify widget so it works in nested environments such as inside Paragraphs
 8.x-1.0-alpha4
 Add views block title option
 Add check in update for table exists
+
+8.x-1.0-alpha5
+Add install script for title field
+
+8.x-1.0-alpha6
+Add select widget
+Add composer.json
+Add user access check
