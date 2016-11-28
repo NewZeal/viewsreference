@@ -67,8 +67,8 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
       $argument = $item->getValue()['argument'];
       $title = $item->getValue()['title'];
       $view = \Drupal\views\Views::getView($view_name);
-      // Someone may have deleted the View or the user may not have access
-      if (!is_object($view) || !$view->access()) {
+      // Someone may have deleted the view
+      if (!is_object($view)) {
         continue;
       }
       // Todo also apply check in case someone deleted the display id
