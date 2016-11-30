@@ -96,13 +96,13 @@ class ViewsReferenceSelectWidget extends OptionsSelectWidget {
       ),
     );
 
-//    $select_element['target_id']['#element_validate'][] = array(get_class($this), 'validateElement');
+    $select_element['target_id']['#element_validate'][] = array(get_class($this), 'validateElement');
     $select_element['#attached']['library'][] = 'viewsreference/viewsreference';
 
     return $select_element;
   }
 
-//  public static function validateElement(array $element, FormStateInterface $form_state) {}
+  public static function validateElement(array $element, FormStateInterface $form_state) {}
 
   /**
    *  AJAX function to get display IDs for a particular View
