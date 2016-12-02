@@ -21,6 +21,3 @@ Add install script for title field
 Add select widget
 Add composer.json
 Add user access check
-
-8.x-1.0-alpha7
-Revert access check - not working

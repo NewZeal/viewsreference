@@ -67,11 +67,10 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
       $argument = $item->getValue()['argument'];
       $title = $item->getValue()['title'];
       $view = \Drupal\views\Views::getView($view_name);
-      // Someone may have deleted the view
+      // Someone may have deleted the View
       if (!is_object($view)) {
         continue;
       }
-      // Todo also apply check in case someone deleted the display id
       $view->setDisplay($display_id);
       
       if ($argument != '') {
@@ -84,11 +83,11 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
           '#markup' => '<div class="viewsreference-title">' . t('@title', ['@title'=> $title]) . '</div>'
         );
       }
+      $view->setTitle($title);
       $view->build($display_id);
       $view->execute($display_id);
       $result = $view->result;
       $render = $view->render();
-      $render['#view']->setTitle($title);
       if ($this->getSetting('render_view')) {
         if ($title && !empty($result)) {
           $elements[$delta]['title'] = $title_render_array;
