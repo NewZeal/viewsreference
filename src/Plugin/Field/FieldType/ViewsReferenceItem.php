@@ -40,7 +40,7 @@ use Drupal\Core\TypedData\DataDefinition;
  * )
  */
 class ViewsReferenceItem extends EntityReferenceItem implements OptionsProviderInterface,
-PreconfiguredFieldUiOptionsInterface {
+  PreconfiguredFieldUiOptionsInterface {
 
   /**
    * {@inheritdoc}
@@ -161,6 +161,10 @@ PreconfiguredFieldUiOptionsInterface {
    * {@inheritdoc}
    */
   public function isEmpty() {
+    // Select widget requires this test
+    if ($this->target_id == '') {
+      return TRUE;
+    }
     return parent::isEmpty();
   }
 
