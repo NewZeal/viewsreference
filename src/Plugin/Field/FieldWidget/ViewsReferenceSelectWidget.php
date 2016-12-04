@@ -28,9 +28,11 @@ class ViewsReferenceSelectWidget extends OptionsSelectWidget {
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $select_element['target_id'] = parent::formElement($items, $delta, $element, $form, $form_state);
     $field_name = $items->getName();
-    $name = $field_name . '[' . $delta . '][0]';
+    $name = $field_name . '[' . $delta . '][target_id]';
 
     $select_element['target_id']['#target_type'] = 'view';
+    $select_element['target_id']['#multiple'] = FALSE;
+    $select_element['target_id']['#empty_option'] = t('- None -');
     $select_element['target_id']['#ajax'] = array(
       'callback' => array($this, 'getDisplayIds'),
       'event' => 'change',
@@ -67,7 +69,7 @@ class ViewsReferenceSelectWidget extends OptionsSelectWidget {
       ),
       '#states' => array(
         'visible' => array(
-          ':input[name="' . $name . '"]' => array('!value' => '_none'),
+          ':input[name="' . $name . '"]' => array('!value' => ''),
         ),
       ),
     );
@@ -79,7 +81,7 @@ class ViewsReferenceSelectWidget extends OptionsSelectWidget {
       '#weight' => 20,
       '#states' => array(
         'visible' => array(
-          ':input[name="' . $name . '"]' => array('!value' => '_none'),
+          ':input[name="' . $name . '"]' => array('!value' => ''),
         ),
       ),
     );
@@ -91,18 +93,18 @@ class ViewsReferenceSelectWidget extends OptionsSelectWidget {
       '#weight' => 21,
       '#states' => array(
         'visible' => array(
-          ':input[name="' . $name . '"]' => array('!value' => '_none'),
+          ':input[name="' . $name . '"]' => array('!value' => ''),
         ),
       ),
     );
 
-    $select_element['target_id']['#element_validate'][] = array(get_class($this), 'validateElement');
+//    $select_element['target_id']['#element_validate'][] = array(get_class($this), 'validateElement');
     $select_element['#attached']['library'][] = 'viewsreference/viewsreference';
 
     return $select_element;
   }
 
-  public static function validateElement(array $element, FormStateInterface $form_state) {}
+//  public static function validateElement(array $element, FormStateInterface $form_state) {}
 
   /**
    *  AJAX function to get display IDs for a particular View
@@ -150,10 +152,7 @@ class ViewsReferenceSelectWidget extends OptionsSelectWidget {
    */
   protected function getEntityId($values, $parents) {
     $key = array_shift($parents);
-    \Drupal::logger('viewsreference')->notice('get key <pre>' . print_r($key,1));
     $values = $values[$key];
-    \Drupal::logger('viewsreference')->notice('get parents <pre>' . print_r($parents,1));
-    \Drupal::logger('viewsreference')->notice('get values <pre>' . print_r($values,1));
     if (is_array($values)) {
       $values = $this->getEntityId($values, $parents);
     }
