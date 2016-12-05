@@ -6,9 +6,6 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Drupal\Core\Field\Plugin\Field\FieldWidget\EntityReferenceAutocompleteWidget;
-use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\InsertCommand;
-use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\viewsreference\Plugin\Field\FieldWidget\ViewsReferenceTrait;
 
 /**
@@ -54,7 +51,8 @@ class ViewsReferenceWidget extends EntityReferenceAutocompleteWidget {
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
 
-    $element = $this->fieldElement($element, $items, $delta);
+    $test = array('filled' => TRUE);
+    $element = $this->fieldElement($element, $items, $delta, $test);
 
     return $element;
   }

@@ -2,7 +2,11 @@
 
 namespace Drupal\viewsreference\Plugin\Field\FieldWidget;
 
-
+use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Ajax\AjaxResponse;
+use Drupal\Core\Ajax\InsertCommand;
+use Drupal\Core\Ajax\HtmlCommand;
 
 /**
  *
@@ -13,6 +17,18 @@ trait ViewsReferenceTrait {
 
   public function fieldElement($element, $items, $delta) {
 
+
+    switch ($element['target_id']['#type']) {
+      case 'select':
+        $test = array('!value' => '');
+        $event = 'change';
+        break;
+      default:
+        $test = array('filled' => TRUE);
+        $event = 'viewsreference-select';
+        break;
+    }
+
     $field_name = $items->getName();
     $name = $field_name . '[' . $delta . '][target_id]';
 
@@ -20,7 +36,7 @@ trait ViewsReferenceTrait {
 
     $element['target_id']['#ajax'] = array(
       'callback' => array($this, 'getDisplayIds'),
-      'event' => 'viewsreference-select',
+      'event' => $event,
       'progress' => array(
         'type' => 'throbber',
         'message' => t('Getting display Ids...'),
@@ -55,7 +71,7 @@ trait ViewsReferenceTrait {
       ),
       '#states' => array(
         'visible' => array(
-          ':input[name="' . $name . '"]' => array('filled' => TRUE),
+          ':input[name="' . $name . '"]' => $test,
         ),
       ),
     );
@@ -67,7 +83,7 @@ trait ViewsReferenceTrait {
       '#weight' => 20,
       '#states' => array(
         'visible' => array(
-          ':input[name="' . $name . '"]' => array('filled' => TRUE),
+          ':input[name="' . $name . '"]' => $test,
         ),
       ),
     );
@@ -79,7 +95,7 @@ trait ViewsReferenceTrait {
       '#weight' => 21,
       '#states' => array(
         'visible' => array(
-          ':input[name="' . $name . '"]' => array('filled' => TRUE),
+          ':input[name="' . $name . '"]' => $test,
         ),
       ),
     );
@@ -93,7 +109,9 @@ trait ViewsReferenceTrait {
    *  AJAX function to get display IDs for a particular View
    */
   public function getDisplayIds(array &$form, FormStateInterface $form_state) {
+
     $trigger = $form_state->getTriggeringElement();
+//    dpm($trigger);
     $delta = $trigger['#delta'];
     $field_name = $trigger['#parents'][0];
     $values = $form_state->getValues();
@@ -101,7 +119,17 @@ trait ViewsReferenceTrait {
     array_shift($parents);
 
     // Get the value for the target id of the View
-    $entity_id = $this->getEntityId($values[$field_name], $parents);
+    switch ($trigger['#type']) {
+      case 'select':
+        $entity_id = $this->getSelectEntityId($values[$field_name], $parents);
+        break;
+      default:
+        $entity_id = $this->getEntityId($values[$field_name], $parents);
+    }
+
+
+
+
     // The following is relevant if our field is nested inside other fields, eg paragraph or field collection
     if (count($parents) > 2) {
       $field_name = $parents[count($parents)-3];
@@ -142,6 +170,24 @@ trait ViewsReferenceTrait {
     return $values;
 
   }
+
+  /**
+   * Helper function to get the current entity_id value from the values array based on parent array for select element
+   * Select adds an extra array level
+   *
+   * @param $values
+   * @param $parents
+   * @return array|bool
+   */
+  protected function getSelectEntityId($values, $parents) {
+    $_parents = $parents;
+    $key = array_shift($_parents);
+    $values = $values[$key];
+    $key = array_shift($_parents);
+    return $this->getEntityId($values[$key], $parents);
+  }
+
+
   /**
    * Helper function to get all display ids
    */

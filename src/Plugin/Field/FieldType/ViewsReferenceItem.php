@@ -40,7 +40,7 @@ use Drupal\Core\TypedData\DataDefinition;
  * )
  */
 class ViewsReferenceItem extends EntityReferenceItem implements OptionsProviderInterface,
-  PreconfiguredFieldUiOptionsInterface {
+PreconfiguredFieldUiOptionsInterface {
 
   /**
    * {@inheritdoc}
@@ -139,6 +139,10 @@ class ViewsReferenceItem extends EntityReferenceItem implements OptionsProviderI
    * {@inheritdoc}
    */
   public function setValue($values, $notify = TRUE) {
+    // Select widget has extra layer of items
+    if (isset($values['target_id']) && is_array($values['target_id'])) {
+      $values['target_id'] = $values['target_id'][0]['target_id'];
+    }
     parent::setValue($values, FALSE);
 
   }
