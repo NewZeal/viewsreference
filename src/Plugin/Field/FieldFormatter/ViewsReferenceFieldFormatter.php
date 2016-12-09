@@ -72,7 +72,7 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
         continue;
       }
       $view->setDisplay($display_id);
-      
+
       if ($argument != '') {
         $view->setArguments(array($argument));
       }
@@ -94,6 +94,8 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
         }
         $elements[$delta]['contents'] = $render;
       }
+
+      $elements[$delta]['contents'] = views_embed_view($view_name, $display_id);
     }
 
     return $elements;
