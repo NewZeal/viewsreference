@@ -94,7 +94,7 @@ PreconfiguredFieldUiOptionsInterface {
     $schema = parent::schema($field_definition);
     $target_type = $field_definition->getSetting('target_type');
     $target_type_info = \Drupal::entityManager()->getDefinition($target_type);
-    $properties = static::propertyDefinitions($field_definition)['target_id'];
+    static::propertyDefinitions($field_definition)['target_id'];
     $schema['columns']['display_id'] = array(
       'description' => 'The ID of the display.',
       'type' => 'varchar_ascii',
