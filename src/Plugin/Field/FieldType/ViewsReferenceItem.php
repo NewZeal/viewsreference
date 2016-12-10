@@ -141,7 +141,7 @@ PreconfiguredFieldUiOptionsInterface {
   public function setValue($values, $notify = TRUE) {
     // Select widget has extra layer of items
     if (isset($values['target_id']) && is_array($values['target_id'])) {
-      $values['target_id'] = $values['target_id'][0]['target_id'];
+      $values['target_id'] = isset($values['target_id'][0]['target_id']) ? $values['target_id'][0]['target_id'] : NULL;
     }
     parent::setValue($values, FALSE);
 
@@ -159,17 +159,6 @@ PreconfiguredFieldUiOptionsInterface {
    */
   public function onChange($property_name, $notify = TRUE) {
     return parent::onChange($property_name, $notify);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function isEmpty() {
-    // Select widget requires this test
-    if ($this->target_id == '') {
-      return TRUE;
-    }
-    return parent::isEmpty();
   }
 
   /**

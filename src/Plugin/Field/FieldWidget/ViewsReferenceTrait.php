@@ -20,7 +20,7 @@ trait ViewsReferenceTrait {
 
     switch ($element['target_id']['#type']) {
       case 'select':
-        $test = array('!value' => '');
+        $test = array('!value' => '_none');
         $event = 'change';
         break;
       default:
@@ -111,7 +111,6 @@ trait ViewsReferenceTrait {
   public function getDisplayIds(array &$form, FormStateInterface $form_state) {
 
     $trigger = $form_state->getTriggeringElement();
-//    dpm($trigger);
     $delta = $trigger['#delta'];
     $field_name = $trigger['#parents'][0];
     $values = $form_state->getValues();
@@ -126,9 +125,6 @@ trait ViewsReferenceTrait {
       default:
         $entity_id = $this->getEntityId($values[$field_name], $parents);
     }
-
-
-
 
     // The following is relevant if our field is nested inside other fields, eg paragraph or field collection
     if (count($parents) > 2) {

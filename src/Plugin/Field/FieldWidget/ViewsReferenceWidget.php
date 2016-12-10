@@ -57,7 +57,6 @@ class ViewsReferenceWidget extends EntityReferenceAutocompleteWidget {
     return $element;
   }
 
-
   /**
    * {@inheritdoc}
    */
@@ -71,6 +70,5 @@ class ViewsReferenceWidget extends EntityReferenceAutocompleteWidget {
   public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
     return parent::massageFormValues($values, $form, $form_state);
   }
-
 
 }
