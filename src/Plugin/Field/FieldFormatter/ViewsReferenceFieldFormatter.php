@@ -72,10 +72,10 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
         continue;
       }
       $view->setDisplay($display_id);
-
-      if ($argument != '') {
-        $view->setArguments(array($argument));
-      }
+      $view->build($display_id);
+      $view->execute($display_id);
+      // We find the result to avoid rendering an empty view
+      $result = $view->result;
 
       if ($title) {
         $title = $view->getTitle();
@@ -83,19 +83,14 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
           '#markup' => '<div class="viewsreference-title">' . t('@title', ['@title'=> $title]) . '</div>'
         );
       }
-      $view->setTitle($title);
-      $view->build($display_id);
-      $view->execute($display_id);
-      $result = $view->result;
-      $render = $view->render();
+
       if ($this->getSetting('render_view')) {
         if ($title && !empty($result)) {
           $elements[$delta]['title'] = $title_render_array;
         }
-        $elements[$delta]['contents'] = $render;
+        $elements[$delta]['contents'] = views_embed_view($view_name, $display_id, $argument);
       }
 
-      $elements[$delta]['contents'] = views_embed_view($view_name, $display_id);
     }
 
     return $elements;

@@ -25,3 +25,6 @@ Add user access check
 8.x-1.0-alpha7
 Revert access check - not working
 Add select widget
+
+8.x-1.0-alpha8
+Change to views_embed_view function
