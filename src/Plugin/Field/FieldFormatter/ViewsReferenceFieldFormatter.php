@@ -67,15 +67,16 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
       $argument = $item->getValue()['argument'];
       $title = $item->getValue()['title'];
       $view = \Drupal\views\Views::getView($view_name);
-      // Someone may have deleted the View
+      // Someone may have deleted the view
       if (!is_object($view)) {
         continue;
       }
+      // Todo also apply check in case someone deleted the display id
       $view->setDisplay($display_id);
-      $view->build($display_id);
-      $view->execute($display_id);
-      // We find the result to avoid rendering an empty view
-      $result = $view->result;
+      
+      if ($argument != '') {
+        $view->setArguments(array($argument));
+      }
 
       if ($title) {
         $title = $view->getTitle();
@@ -83,14 +84,17 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
           '#markup' => '<div class="viewsreference-title">' . t('@title', ['@title'=> $title]) . '</div>'
         );
       }
-
+      $view->build($display_id);
+      $view->execute($display_id);
+      $result = $view->result;
+      $render = $view->render();
+      $render['#view']->setTitle($title);
       if ($this->getSetting('render_view')) {
         if ($title && !empty($result)) {
           $elements[$delta]['title'] = $title_render_array;
         }
-        $elements[$delta]['contents'] = views_embed_view($view_name, $display_id, $argument);
+        $elements[$delta]['contents'] = $render;
       }
-
     }
 
     return $elements;

@@ -94,7 +94,7 @@ PreconfiguredFieldUiOptionsInterface {
     $schema = parent::schema($field_definition);
     $target_type = $field_definition->getSetting('target_type');
     $target_type_info = \Drupal::entityManager()->getDefinition($target_type);
-    static::propertyDefinitions($field_definition)['target_id'];
+    $properties = static::propertyDefinitions($field_definition)['target_id'];
     $schema['columns']['display_id'] = array(
       'description' => 'The ID of the display.',
       'type' => 'varchar_ascii',
@@ -139,10 +139,6 @@ PreconfiguredFieldUiOptionsInterface {
    * {@inheritdoc}
    */
   public function setValue($values, $notify = TRUE) {
-    // Select widget has extra layer of items
-    if (isset($values['target_id']) && is_array($values['target_id'])) {
-      $values['target_id'] = $values['target_id'][0]['target_id'];
-    }
     parent::setValue($values, FALSE);
 
   }
@@ -165,10 +161,6 @@ PreconfiguredFieldUiOptionsInterface {
    * {@inheritdoc}
    */
   public function isEmpty() {
-    // Select widget requires this test
-    if ($this->target_id == '') {
-      return TRUE;
-    }
     return parent::isEmpty();
   }
 
