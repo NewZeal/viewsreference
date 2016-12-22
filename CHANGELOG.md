@@ -28,3 +28,5 @@ Add select widget
 
 8.x-1.0-alpha8
 Change to views_embed_view function
+Add view plugin select to limit plugins available in field
+Attempt to fix composer problem

@@ -25,7 +25,7 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
   public static function defaultSettings() {
     $options = parent::defaultSettings();
 
-    $options['render_view'] = TRUE;
+    $options['plugin_types'] = array('block');
     return $options;
   }
 
@@ -34,11 +34,20 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $form = parent::settingsForm($form, $form_state);
-    // We may decide on alternatives to rendering the view so get settings established
-    $form['render_view'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Render View'),
-      '#default_value' => $this->getSetting('render_view'),
+
+    $types = \Drupal\views\Views::pluginList();
+    $options = array();
+    foreach ($types as $key => $type) {
+      if ($type['type'] == 'display') {
+        $options[str_replace('display:', '', $key)] = $type['title']->render();
+      }
+    }
+
+    $form['plugin_types'] = [
+      '#type' => 'checkboxes',
+      '#options' => $options,
+      '#title' => $this->t('View display plugins to allow'),
+      '#default_value' => $this->getSetting('plugin_types'),
     ];
 
     return $form;
@@ -51,7 +60,13 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
     $summary = array();
     $settings = $this->getSettings();
 
-    $summary[] = t('Render View: @view', array('@view' => $settings['render_view'] ? 'TRUE' : 'FALSE'));
+    $allowed = array();
+    foreach ($settings['plugin_types'] as $type) {
+      if ($type) {
+        $allowed[] = $type;
+      }
+    }
+    $summary[] = t('Allowed plugins: @view', array('@view' => implode(', ', $allowed)));
     return $summary;
   }
 
@@ -67,16 +82,15 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
       $argument = $item->getValue()['argument'];
       $title = $item->getValue()['title'];
       $view = \Drupal\views\Views::getView($view_name);
-      // Someone may have deleted the view
+      // Someone may have deleted the View
       if (!is_object($view)) {
         continue;
       }
-      // Todo also apply check in case someone deleted the display id
       $view->setDisplay($display_id);
-      
-      if ($argument != '') {
-        $view->setArguments(array($argument));
-      }
+      $view->build($display_id);
+      $view->execute($display_id);
+      // We find the result to avoid rendering an empty view
+      $result = $view->result;
 
       if ($title) {
         $title = $view->getTitle();
@@ -84,17 +98,14 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
           '#markup' => '<div class="viewsreference-title">' . t('@title', ['@title'=> $title]) . '</div>'
         );
       }
-      $view->build($display_id);
-      $view->execute($display_id);
-      $result = $view->result;
-      $render = $view->render();
-      $render['#view']->setTitle($title);
-      if ($this->getSetting('render_view')) {
+
+      if ($this->getSetting('plugin_types')) {
         if ($title && !empty($result)) {
           $elements[$delta]['title'] = $title_render_array;
         }
-        $elements[$delta]['contents'] = $render;
+        $elements[$delta]['contents'] = views_embed_view($view_name, $display_id, $argument);
       }
+
     }
 
     return $elements;

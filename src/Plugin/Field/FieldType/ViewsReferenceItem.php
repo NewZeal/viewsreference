@@ -56,7 +56,9 @@ PreconfiguredFieldUiOptionsInterface {
    * {@inheritdoc}
    */
   public static function defaultFieldSettings() {
-    return parent::defaultFieldSettings();
+    return array(
+      'plugin_types' => array('block' => 'block')
+    ) + parent::defaultFieldSettings();
   }
 
   /**
@@ -139,6 +141,10 @@ PreconfiguredFieldUiOptionsInterface {
    * {@inheritdoc}
    */
   public function setValue($values, $notify = TRUE) {
+    // Select widget has extra layer of items
+    if (isset($values['target_id']) && is_array($values['target_id'])) {
+      $values['target_id'] = $values['target_id'][0]['target_id'];
+    }
     parent::setValue($values, FALSE);
 
   }
@@ -161,6 +167,10 @@ PreconfiguredFieldUiOptionsInterface {
    * {@inheritdoc}
    */
   public function isEmpty() {
+    // Select widget requires this test
+    if ($this->target_id == '') {
+      return TRUE;
+    }
     return parent::isEmpty();
   }
 
@@ -168,14 +178,33 @@ PreconfiguredFieldUiOptionsInterface {
    * {@inheritdoc}
    */
   public function storageSettingsForm(array &$form, FormStateInterface $form_state, $has_data) {
-    return array();
+    return $form;
   }
 
   /**
    * {@inheritdoc}
    */
   public function fieldSettingsForm(array $form, FormStateInterface $form_state) {
-    return array();
+
+    $types = \Drupal\views\Views::pluginList();
+    $options = array();
+    foreach ($types as $key => $type) {
+      if ($type['type'] == 'display') {
+        $options[str_replace('display:', '', $key)] = $type['title']->render();
+      }
+    }
+
+    $default = $this->getSetting('plugin_types') !== NULL ? $this->getSetting('plugin_types') :
+      $this->defaultFieldSettings()['plugin_types'];
+
+    $form['plugin_types'] = [
+      '#type' => 'checkboxes',
+      '#options' => $options,
+      '#title' => $this->t('View display plugins to allow'),
+      '#default_value' => $default,
+    ];
+
+    return $form;
   }
 
 
