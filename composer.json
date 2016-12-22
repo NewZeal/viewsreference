@@ -10,5 +10,10 @@
     "issues": "http://drupal.org/project/issues/viewsreference",
     "source": "http://cgit.drupalcode.org/viewsreference"
   },
-  "require": { }
+  "conflict": {
+    "drupal/viewsreferennce": "*"
+  },
+  "require": {
+    "drupal/viewsreference": "*"
+  }
 }
