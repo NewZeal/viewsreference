@@ -95,7 +95,7 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
       if ($title) {
         $title = $view->getTitle();
         $title_render_array = array(
-          '#markup' => '<div class="viewsreference-title">' . t('@title', ['@title'=> $title]) . '</div>'
+          '#markup' => '<div class="viewsreference-title">' . $this->t($title) . '</div>'
         );
       }
 
@@ -103,7 +103,21 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
         if ($title && !empty($result)) {
           $elements[$delta]['title'] = $title_render_array;
         }
-        $elements[$delta]['contents'] = views_embed_view($view_name, $display_id, $argument);
+
+        // Allow multiple arguments
+        $arguments = [$argument];
+
+        if (preg_match('/\//', $argument)) {
+          $arguments = explode('/', $argument);
+        }
+
+        $args = array(
+          $view_name,
+          $display_id,
+        );
+
+        $args = array_merge($args, $arguments);
+        $elements[$delta]['contents'] = call_user_func_array('views_embed_view', $args);
       }
 
     }

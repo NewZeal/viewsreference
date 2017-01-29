@@ -145,6 +145,10 @@ PreconfiguredFieldUiOptionsInterface {
     if (isset($values['target_id']) && is_array($values['target_id'])) {
       $values['target_id'] = $values['target_id'][0]['target_id'];
     }
+    // Empty string argument only possible if no argument supplied.
+    if (isset($values['argument']) && $values['argument'] === '') {
+      $values['argument'] = NULL;
+    }
     parent::setValue($values, FALSE);
 
   }

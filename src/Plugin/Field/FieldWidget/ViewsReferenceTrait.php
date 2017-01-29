@@ -79,10 +79,10 @@ trait ViewsReferenceTrait {
       ),
     );
 
-    $element['argument'] = array(
-      '#title' => 'Argument',
-      '#type' => 'textfield',
-      '#default_value' => isset($items[$delta]->getValue()['argument']) ? $items[$delta]->getValue()['argument'] : '',
+    $element['title'] = array(
+      '#title' => 'Include View Title',
+      '#type' => 'checkbox',
+      '#default_value' => isset($items[$delta]->getValue()['title']) ? $items[$delta]->getValue()['title'] : '',
       '#weight' => 20,
       '#states' => array(
         'visible' => array(
@@ -91,10 +91,10 @@ trait ViewsReferenceTrait {
       ),
     );
 
-    $element['title'] = array(
-      '#title' => 'Include View Title',
-      '#type' => 'checkbox',
-      '#default_value' => isset($items[$delta]->getValue()['title']) ? $items[$delta]->getValue()['title'] : '',
+    $element['argument'] = array(
+      '#title' => 'Argument',
+      '#type' => 'textfield',
+      '#default_value' => isset($items[$delta]->getValue()['argument']) ? $items[$delta]->getValue()['argument'] : '',
       '#weight' => 21,
       '#states' => array(
         'visible' => array(
