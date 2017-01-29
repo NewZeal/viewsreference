@@ -127,14 +127,6 @@ PreconfiguredFieldUiOptionsInterface {
    */
   public function getConstraints() {
     return parent::getConstraints();
-    // Remove the 'AllowedValuesConstraint' validation constraint because entity
-    // reference fields already use the 'ValidReference' constraint.
-//    foreach ($constraints as $key => $constraint) {
-//      if ($constraint instanceof AllowedValuesConstraint) {
-//        unset($constraints[$key]);
-//      }
-//    }
-
   }
 
   /**
@@ -215,69 +207,6 @@ PreconfiguredFieldUiOptionsInterface {
     return !$this->isEmpty() && $this->target_id === NULL && $this->entity->isNew();
   }
 
-
-  /**
-   * Render API callback: Processes the field settings form and allows access to
-   * the form state.
-   *
-   * @see static::fieldSettingsForm()
-   */
-//  public static function fieldSettingsAjaxProcess($form, FormStateInterface $form_state) {
-//    static::fieldSettingsAjaxProcessElement($form, $form);
-//    return $form;
-//  }
-
-  /**
-   * Adds entity_reference specific properties to AJAX form elements from the
-   * field settings form.
-   *
-   * @see static::fieldSettingsAjaxProcess()
-   */
-//  public static function fieldSettingsAjaxProcessElement(&$element, $main_form) {
-//    if (!empty($element['#ajax'])) {
-//      $element['#ajax'] = array(
-//        'callback' => array(get_called_class(), 'settingsAjax'),
-//        'wrapper' => $main_form['#id'],
-//        'element' => $main_form['#array_parents'],
-//      );
-//    }
-//
-//    foreach (Element::children($element) as $key) {
-//      static::fieldSettingsAjaxProcessElement($element[$key], $main_form);
-//    }
-//  }
-
-  /**
-   * Render API callback: Moves entity_reference specific Form API elements
-   * (i.e. 'handler_settings') up a level for easier processing by the
-   * validation and submission handlers.
-   *
-   * @see _entity_reference_field_settings_process()
-   */
-//  public static function formProcessMergeParent($element) {
-//    $parents = $element['#parents'];
-//    array_pop($parents);
-//    $element['#parents'] = $parents;
-//    return $element;
-//  }
-
-  /**
-   * Ajax callback for the handler settings form.
-   *
-   * @see static::fieldSettingsForm()
-   */
-//  public static function settingsAjax($form, FormStateInterface $form_state) {
-//    return NestedArray::getValue($form, $form_state->getTriggeringElement()['#ajax']['element']);
-//  }
-
-  /**
-   * Submit handler for the non-JS case.
-   *
-   * @see static::fieldSettingsForm()
-   */
-//  public static function settingsAjaxSubmit($form, FormStateInterface $form_state) {
-//    $form_state->setRebuild();
-//  }
 
   /**
    * {@inheritdoc}
