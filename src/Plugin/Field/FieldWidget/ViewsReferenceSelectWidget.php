@@ -2,8 +2,6 @@
 
 namespace Drupal\viewsreference\Plugin\Field\FieldWidget;
 
-use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsSelectWidget;
 use Drupal\Core\Form\FormStateInterface;
@@ -34,10 +32,8 @@ class ViewsReferenceSelectWidget extends OptionsSelectWidget {
     $select_element = $this->fieldElement($select_element, $items, $delta);
 
     $select_element['target_id']['#multiple'] = FALSE;
-    $select_element['target_id']['#empty_option'] = t('- None -');
 
     return $select_element;
   }
-
 
 }
