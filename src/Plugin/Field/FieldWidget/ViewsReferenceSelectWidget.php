@@ -5,7 +5,6 @@ namespace Drupal\viewsreference\Plugin\Field\FieldWidget;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsSelectWidget;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\viewsreference\Plugin\Field\FieldWidget\ViewsReferenceTrait;
 
 /**
  * Plugin implementation of the 'options_select' widget.

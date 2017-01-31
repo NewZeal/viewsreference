@@ -2,14 +2,13 @@
 
 namespace Drupal\viewsreference\Plugin\Field\FieldFormatter;
 
-use Drupal\Component\Utility\Unicode;
-use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\views\Views;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
 
-
 /**
+ * Field formatter for Viewsreference Field.
  *
  * @FieldFormatter(
  *   id = "viewsreference_formatter",
@@ -35,7 +34,7 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $form = parent::settingsForm($form, $form_state);
 
-    $types = \Drupal\views\Views::pluginList();
+    $types = Views::pluginList();
     $options = array();
     foreach ($types as $key => $type) {
       if ($type['type'] == 'display') {
@@ -81,21 +80,21 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
       $display_id = $item->getValue()['display_id'];
       $argument = $item->getValue()['argument'];
       $title = $item->getValue()['title'];
-      $view = \Drupal\views\Views::getView($view_name);
-      // Someone may have deleted the View
+      $view = Views::getView($view_name);
+      // Someone may have deleted the View.
       if (!is_object($view)) {
         continue;
       }
       $view->setDisplay($display_id);
       $view->build($display_id);
       $view->execute($display_id);
-      // We find the result to avoid rendering an empty view
+      // We find the result to avoid rendering an empty view.
       $result = $view->result;
 
       if ($title) {
         $title = $view->getTitle();
         $title_render_array = array(
-          '#markup' => '<div class="viewsreference-title">' . $this->t($title) . '</div>'
+          '#markup' => '<div class="viewsreference-title">' . $this->t($title) . '</div>',
         );
       }
 
@@ -104,7 +103,7 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
           $elements[$delta]['title'] = $title_render_array;
         }
 
-        // Allow multiple arguments
+        // Allow multiple arguments.
         $arguments = [$argument];
 
         if (preg_match('/\//', $argument)) {
@@ -124,12 +123,5 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
 
     return $elements;
   }
-
-  /**
-   * {@inheritdoc}
-   */
-//  public static function isApplicable(FieldDefinitionInterface $field_definition) {
-//    return $field_definition->getTargetEntityTypeId() === 'user' && $field_definition->getName() === 'name';
-//  }
 
 }

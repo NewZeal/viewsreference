@@ -2,24 +2,13 @@
 
 namespace Drupal\viewsreference\Plugin\Field\FieldType;
 
-use Drupal\Component\Utility\Html;
-use Drupal\Component\Utility\NestedArray;
-use Drupal\Core\Entity\EntityInterface;
+use Drupal\views\Views;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Entity\TypedData\EntityDataDefinition;
-use Drupal\Core\Field\FieldDefinitionInterface;
-use Drupal\Core\Field\FieldItemBase;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Field\PreconfiguredFieldUiOptionsInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Form\OptGroup;
-use Drupal\Core\Render\Element;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\Core\TypedData\DataReferenceDefinition;
-use Drupal\Core\TypedData\DataReferenceTargetDefinition;
 use Drupal\Core\TypedData\OptionsProviderInterface;
-use Drupal\Core\Validation\Plugin\Validation\Constraint\AllowedValuesConstraint;
 use Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem;
 use Drupal\Core\TypedData\DataDefinition;
 
@@ -39,13 +28,13 @@ use Drupal\Core\TypedData\DataDefinition;
  *   list_class = "\Drupal\Core\Field\EntityReferenceFieldItemList",
  * )
  */
-class ViewsReferenceItem extends EntityReferenceItem implements OptionsProviderInterface,
-PreconfiguredFieldUiOptionsInterface {
+class ViewsReferenceItem extends EntityReferenceItem implements
+    OptionsProviderInterface,
+    PreconfiguredFieldUiOptionsInterface {
 
   /**
    * {@inheritdoc}
    */
-
   public static function defaultStorageSettings() {
     return array(
       'target_type' => 'view',
@@ -57,7 +46,7 @@ PreconfiguredFieldUiOptionsInterface {
    */
   public static function defaultFieldSettings() {
     return array(
-      'plugin_types' => array('block' => 'block')
+      'plugin_types' => array('block' => 'block'),
     ) + parent::defaultFieldSettings();
   }
 
@@ -108,13 +97,13 @@ PreconfiguredFieldUiOptionsInterface {
     $schema['columns']['argument'] = array(
       'description' => 'An optional argument.',
       'type' => 'varchar_ascii',
-      'length' => 255
+      'length' => 255,
     );
 
     $schema['columns']['title'] = array(
       'description' => 'Include title.',
       'type' => 'int',
-      'length' => 11
+      'length' => 11,
     );
 
     $schema['indexes']['display_id'] = array('display_id');
@@ -133,7 +122,7 @@ PreconfiguredFieldUiOptionsInterface {
    * {@inheritdoc}
    */
   public function setValue($values, $notify = TRUE) {
-    // Select widget has extra layer of items
+    // Select widget has extra layer of items.
     if (isset($values['target_id']) && is_array($values['target_id'])) {
       $values['target_id'] = isset($values['target_id'][0]['target_id']) ? $values['target_id'][0]['target_id'] : NULL;
     }
@@ -171,7 +160,7 @@ PreconfiguredFieldUiOptionsInterface {
    */
   public function fieldSettingsForm(array $form, FormStateInterface $form_state) {
 
-    $types = \Drupal\views\Views::pluginList();
+    $types = Views::pluginList();
     $options = array();
     foreach ($types as $key => $type) {
       if ($type['type'] == 'display') {
@@ -192,7 +181,6 @@ PreconfiguredFieldUiOptionsInterface {
     return $form;
   }
 
-
   /**
    * Determines whether the item holds an unsaved entity.
    *
@@ -206,7 +194,6 @@ PreconfiguredFieldUiOptionsInterface {
   public function hasNewEntity() {
     return !$this->isEmpty() && $this->target_id === NULL && $this->entity->isNew();
   }
-
 
   /**
    * {@inheritdoc}

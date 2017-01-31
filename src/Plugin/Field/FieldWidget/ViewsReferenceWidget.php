@@ -6,7 +6,6 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Drupal\Core\Field\Plugin\Field\FieldWidget\EntityReferenceAutocompleteWidget;
-use Drupal\viewsreference\Plugin\Field\FieldWidget\ViewsReferenceTrait;
 
 /**
  * Plugin implementation of the 'entity_reference_autocomplete' widget.

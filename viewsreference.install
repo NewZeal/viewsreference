@@ -1,13 +1,18 @@
 <?php
 
 /**
- * Update node fields already created with argument field
+ * @file
+ * Viewsreference install functions.
+ */
+
+/**
+ * Update node fields already created with argument field.
  */
 function viewsreference_update_8100() {
   $types = array(
     'node',
     'taxonomy_term',
-    'user'
+    'user',
   );
   $fieldManager = \Drupal::service('entity_field.manager');
   $entityManager = \Drupal::service('entity.manager');
@@ -41,13 +46,13 @@ function viewsreference_update_8100() {
 }
 
 /**
- * Update node fields already created with title field
+ * Update node fields already created with title field.
  */
 function viewsreference_update_8101() {
   $types = array(
     'node',
     'taxonomy_term',
-    'user'
+    'user',
   );
   $fieldManager = \Drupal::service('entity_field.manager');
   $entityManager = \Drupal::service('entity.manager');
