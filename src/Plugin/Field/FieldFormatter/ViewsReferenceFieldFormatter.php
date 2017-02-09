@@ -87,6 +87,7 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
       }
       $view->setDisplay($display_id);
       $view->build($display_id);
+      $view->preExecute();
       $view->execute($display_id);
       // We find the result to avoid rendering an empty view.
       $result = $view->result;

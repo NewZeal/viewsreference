@@ -36,3 +36,5 @@ Fix argument handling: https://www.drupal.org/node/2847192
 Add multiple arguments: https://www.drupal.org/node/2846625
 Fix placeholder error: https://www.drupal.org/node/2838413
 Remove redundant code
+Remove extra settings: https://www.drupal.org/node/2851184
+Add preexecute: https://www.drupal.org/node/2851058

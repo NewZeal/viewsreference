@@ -160,6 +160,8 @@ class ViewsReferenceItem extends EntityReferenceItem implements
    */
   public function fieldSettingsForm(array $form, FormStateInterface $form_state) {
 
+    $form = array();
+
     $types = Views::pluginList();
     $options = array();
     foreach ($types as $key => $type) {
