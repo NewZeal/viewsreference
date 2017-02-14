@@ -26,11 +26,22 @@ class ViewsReferenceSelectWidget extends OptionsSelectWidget {
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
+
     $select_element['target_id'] = parent::formElement($items, $delta, $element, $form, $form_state);
 
     $select_element = $this->fieldElement($select_element, $items, $delta);
-
     $select_element['target_id']['#multiple'] = FALSE;
+    if (!$this->isDefaultValueWidget($form_state)) {
+      $selected_views = $items->getSetting('preselect_views');
+      $selected_views = array_diff($selected_views, array("0"));
+      if (count($selected_views) >= 1) {
+        $first_option = array("- None -");
+        $select_element['target_id']['#options'] = array_merge($first_option, $selected_views);
+      }
+      else {
+        $select_element['target_id']['#empty_option'] = '- None -';
+      }
+    }
 
     return $select_element;
   }

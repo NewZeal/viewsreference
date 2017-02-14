@@ -47,6 +47,7 @@ class ViewsReferenceItem extends EntityReferenceItem implements
   public static function defaultFieldSettings() {
     return array(
       'plugin_types' => array('block' => 'block'),
+      'preselect_views' => array(),
     ) + parent::defaultFieldSettings();
   }
 
@@ -159,26 +160,27 @@ class ViewsReferenceItem extends EntityReferenceItem implements
    * {@inheritdoc}
    */
   public function fieldSettingsForm(array $form, FormStateInterface $form_state) {
-
-    $form = array();
-
-    $types = Views::pluginList();
-    $options = array();
-    foreach ($types as $key => $type) {
-      if ($type['type'] == 'display') {
-        $options[str_replace('display:', '', $key)] = $type['title']->render();
-      }
-    }
-
-    $default = $this->getSetting('plugin_types') !== NULL ? $this->getSetting('plugin_types') :
-      $this->defaultFieldSettings()['plugin_types'];
-
+    $form = parent::fieldSettingsForm($form, $form_state);
+    $settings = $this->getSettings();
+    $preselect_views = $settings['preselect_views'];
+    $default_plugins = $settings['plugin_types'];
+    $display_options = $this->getAllPluginList();
+    $view_list = $this->getAllViewsNames();
     $form['plugin_types'] = [
       '#type' => 'checkboxes',
-      '#options' => $options,
+      '#options' => $display_options,
       '#title' => $this->t('View display plugins to allow'),
-      '#default_value' => $default,
+      '#default_value' => $default_plugins,
+      '#weight' => 1,
     ];
+
+    $form['preselect_views'] = array(
+      '#type' => 'checkboxes',
+      '#title' => t('Preselect View Options'),
+      '#options' => $view_list,
+      '#default_value' => $preselect_views,
+      '#weight' => 2,
+    );
 
     return $form;
   }
@@ -203,6 +205,32 @@ class ViewsReferenceItem extends EntityReferenceItem implements
   public static function getPreconfiguredOptions() {
     return array();
 
+  }
+
+  /**
+   * Helper function to get all display ids.
+   */
+  private function getAllPluginList() {
+    $types = Views::pluginList();
+    $options = array();
+    foreach ($types as $key => $type) {
+      if ($type['type'] == 'display') {
+        $options[str_replace('display:', '', $key)] = $type['title']->render();
+      }
+    }
+    return $options;
+  }
+
+  /**
+   * Helper function to get all View Names.
+   */
+  private function getAllViewsNames() {
+    $views = Views::getEnabledViews();
+    $options = array();
+    foreach ($views as $view) {
+      $options[$view->get('id')] = $view->get('label');
+    }
+    return $options;
   }
 
 }
