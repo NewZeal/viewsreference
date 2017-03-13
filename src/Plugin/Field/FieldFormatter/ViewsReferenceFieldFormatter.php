@@ -85,40 +85,32 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
       if (!is_object($view)) {
         continue;
       }
+      $arguments = [$argument];
+      if (preg_match('/\//', $argument)) {
+        $arguments = explode('/', $argument);
+      }
       $view->setDisplay($display_id);
+      $view->setArguments($arguments);
       $view->build($display_id);
       $view->preExecute();
       $view->execute($display_id);
-      // We find the result to avoid rendering an empty view.
-      $result = $view->result;
 
-      if ($title) {
-        $title = $view->getTitle();
-        $title_render_array = array(
-          '#theme' => 'viewsreference__view_title',
-          '#title' => $this->t($title),
-        );
-      }
-
-      if ($this->getSetting('plugin_types')) {
-        if ($title && !empty($result)) {
-          $elements[$delta]['title'] = $title_render_array;
+      if (!empty($view->result)) {
+        if ($title) {
+          $title = $view->getTitle();
+          $title_render_array = array(
+            '#theme' => 'viewsreference__view_title',
+            '#title' => $this->t($title),
+          );
         }
 
-        // Allow multiple arguments.
-        $arguments = [$argument];
-
-        if (preg_match('/\//', $argument)) {
-          $arguments = explode('/', $argument);
+        if ($this->getSetting('plugin_types')) {
+          if ($title) {
+            $elements[$delta]['title'] = $title_render_array;
+          }
         }
 
-        $args = array(
-          $view_name,
-          $display_id,
-        );
-
-        $args = array_merge($args, $arguments);
-        $elements[$delta]['contents'] = call_user_func_array('views_embed_view', $args);
+        $elements[$delta] = $view->buildRenderable($display_id);
       }
 
     }
