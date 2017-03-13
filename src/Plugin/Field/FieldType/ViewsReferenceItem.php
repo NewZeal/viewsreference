@@ -153,7 +153,7 @@ class ViewsReferenceItem extends EntityReferenceItem implements
    * {@inheritdoc}
    */
   public function storageSettingsForm(array &$form, FormStateInterface $form_state, $has_data) {
-    return $form;
+    return parent::storageSettingsForm($form, $form_state, $has_data);
   }
 
   /**
