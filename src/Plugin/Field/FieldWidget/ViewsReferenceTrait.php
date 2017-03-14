@@ -186,12 +186,38 @@ trait ViewsReferenceTrait {
    * @return array|bool
    *   The entity ID
    */
-  protected function getSelectEntityId($values, $parents) {
+  protected function getSelectEntityId(array $values, array $parents) {
     $_parents = $parents;
     $key = array_shift($_parents);
-    $values = $values[$key];
-    $key = array_shift($_parents);
+
+    if (count($parents) > 2) {
+      $parents = (array_slice($parents, -2, 2));
+    }
+    while ($this->arrayDepth($values[$key]) > 2) {
+      $values = $values[$key];
+      $key = array_shift($_parents);
+    }
+
     return $this->getEntityId($values[$key], $parents);
+  }
+
+  /**
+   * Helper function to return array depth.
+   */
+  private function arrayDepth(array $array) {
+    $max_depth = 1;
+
+    foreach ($array as $value) {
+      if (is_array($value)) {
+        $depth = $this->arrayDepth($value) + 1;
+
+        if ($depth > $max_depth) {
+          $max_depth = $depth;
+        }
+      }
+    }
+
+    return $max_depth;
   }
 
   /**
