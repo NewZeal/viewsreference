@@ -34,6 +34,7 @@ class ViewsReferenceSelectWidget extends OptionsSelectWidget {
     if (!$this->isDefaultValueWidget($form_state)) {
       $selected_views = $items->getSetting('preselect_views');
       $selected_views = array_diff($selected_views, array("0"));
+      $selected_views = $this->getViewNames($selected_views);
       if (count($selected_views) >= 1) {
         $first_option = array("- None -");
         $select_element['target_id']['#options'] = array_merge($first_option, $selected_views);

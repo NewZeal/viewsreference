@@ -253,4 +253,15 @@ trait ViewsReferenceTrait {
     return $options;
   }
 
+  /**
+   * Helper to convert view array of machine names to label names.
+   */
+  protected function getViewNames($views_array) {
+    foreach ($views_array as $key => $value) {
+      $view = Views::getView($key);
+      $views_list[$view->storage->id()] = $view->storage->label();
+    }
+    return $views_list;
+  }
+
 }
