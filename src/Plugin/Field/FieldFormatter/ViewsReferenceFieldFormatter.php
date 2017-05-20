@@ -106,7 +106,7 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
       $view->preExecute();
       $view->execute($display_id);
 
-      if (!empty($view->result)) {
+      if (!empty($view->result) || !empty($view->empty)) {
         if ($title) {
           $title = $view->getTitle();
           $title_render_array = array(
@@ -123,7 +123,6 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
 
         $elements[$delta]['contents'] = $view->buildRenderable($display_id);
       }
-
     }
 
     return $elements;
