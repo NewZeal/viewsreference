@@ -121,7 +121,7 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
           }
         }
 
-        $elements[$delta] = $view->buildRenderable($display_id);
+        $elements[$delta]['contents'] = $view->buildRenderable($display_id);
       }
 
     }
