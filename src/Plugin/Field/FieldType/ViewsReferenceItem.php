@@ -69,6 +69,10 @@ class ViewsReferenceItem extends EntityReferenceItem implements
       ->setLabel(new TranslatableMarkup('Title'))
       ->setDescription(new TranslatableMarkup('Whether or not to include the View or Block title'));
 
+    $properties['data'] = DataDefinition::create('string')
+      ->setLabel(new TranslatableMarkup('Data'))
+      ->setDescription(new TranslatableMarkup('Settings data for advanced use'));
+
     return $properties;
   }
 
@@ -105,6 +109,12 @@ class ViewsReferenceItem extends EntityReferenceItem implements
       'description' => 'Include title.',
       'type' => 'int',
       'length' => 11,
+    );
+
+    $schema['columns']['data'] = array(
+      'description' => 'Serialized data.',
+      'type' => 'text',
+      'size' => 'big'
     );
 
     $schema['indexes']['display_id'] = array('display_id');
