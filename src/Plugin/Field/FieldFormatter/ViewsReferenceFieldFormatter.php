@@ -85,23 +85,28 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
       if (!is_object($view)) {
         continue;
       }
-      $arguments = [$argument];
-      if (preg_match('/\//', $argument)) {
-        $arguments = explode('/', $argument);
-      }
-
-      $node = \Drupal::routeMatch()->getParameter('node');
-      $token_service = \Drupal::token();
-      if (is_array($arguments)) {
-        foreach ($arguments as $index => $argument) {
-          if (!empty($token_service->scan($argument))) {
-            $arguments[$index] = $token_service->replace($argument, ['node' => $node]);
-          }
-        }
-      }
 
       $view->setDisplay($display_id);
-      $view->setArguments($arguments);
+
+      if ($argument) {
+        $arguments = [$argument];
+        if (preg_match('/\//', $argument)) {
+          $arguments = explode('/', $argument);
+        }
+
+        $node = \Drupal::routeMatch()->getParameter('node');
+        $token_service = \Drupal::token();
+        if (is_array($arguments)) {
+          foreach ($arguments as $index => $argument) {
+            if (!empty($token_service->scan($argument))) {
+              $arguments[$index] = $token_service->replace($argument, ['node' => $node]);
+            }
+          }
+        }
+
+        $view->setArguments($arguments);
+      }
+
       $view->build($display_id);
       $view->preExecute();
       $view->execute($display_id);
