@@ -5,9 +5,8 @@ namespace Drupal\viewsreference_options\Plugin\Field\FieldWidget;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
-use Drupal\Core\Field\Plugin\Field\FieldWidget\EntityReferenceAutocompleteWidget;
-//use Drupal\viewsreference\Plugin\Field\FieldWidget\ViewsReferenceTrait;
 
+// Use Drupal\viewsreference\Plugin\Field\FieldWidget\ViewsReferenceTrait;.
 /**
  * Plugin implementation of the 'entity_reference_autocomplete' widget.
  *
@@ -54,7 +53,7 @@ class ViewsReferenceOptionsWidget extends ViewsReferenceWidget {
     $test = array('filled' => TRUE);
     $element = $this->fieldElement($element, $items, $delta, $test);
 
-    // Add extra options here
+    // Add extra options here.
     return $element;
   }
 

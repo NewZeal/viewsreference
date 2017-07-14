@@ -38,3 +38,11 @@ Fix placeholder error: https://www.drupal.org/node/2838413
 Remove redundant code
 Remove extra settings: https://www.drupal.org/node/2851184
 Add preexecute: https://www.drupal.org/node/2851058
+
+8.x-1.0-beta2
+More fixes to arguments: https://www.drupal.org/node/2888158
+Clean up install code: https://www.drupal.org/node/2862022
+
+8.x-1.0-rc1
+Apply Details form type to title and argument options to prepare for advanced options module
+Run codesniffer on code

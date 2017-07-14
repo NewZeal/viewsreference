@@ -5,6 +5,9 @@
  * Viewsreference install functions.
  */
 
+use Drupal\Core\Entity\Sql\SqlContentEntityStorage;
+
+
 /**
  * Update node fields already created with argument field.
  */
@@ -19,22 +22,23 @@ function viewsreference_update_8101() {
   viewsreference_update_viewsreference_fields('title');
 }
 
-
 /**
  * Update node fields already created with data field.
  */
 function viewsreference_update_8102() {
   viewsreference_update_viewsreference_fields('data');
 }
+
 /**
  * Update all instances using viewsreference field type with new field. This is
  * called from hook_update_N() when new fields are added to the schema.
  *
- * @param string $new_field_name The name of the new field to be added.
+ * @param string $new_field_name
+ *   The name of the new field to be added.
  */
 function viewsreference_update_viewsreference_fields($new_field_name) {
 
-  // Caches have to be cleared first to ensure new fields are detected in the code
+  // Caches have to be cleared first to ensure new fields are detected in the code.
   drupal_flush_all_caches();
 
   // Retrieve list of all viewsreference fields mapped by entity type.
@@ -46,7 +50,7 @@ function viewsreference_update_viewsreference_fields($new_field_name) {
     foreach (array_keys($fields) as $field_name) {
       $field_storage_definition = $manager->getFieldStorageDefinition($field_name, $entity_type_id);
       $storage = \Drupal::entityTypeManager()->getStorage($entity_type_id);
-      if ($storage instanceof \Drupal\Core\Entity\Sql\SqlContentEntityStorage) {
+      if ($storage instanceof SqlContentEntityStorage) {
         $table_mapping = $storage->getTableMapping([
           $field_name => $field_storage_definition,
         ]);

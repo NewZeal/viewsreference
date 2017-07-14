@@ -4,7 +4,6 @@ namespace Drupal\viewsreference_options\Plugin\Field\FieldFormatter;
 
 use Drupal\views\Views;
 use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -34,8 +33,7 @@ class ViewsReferenceOptionsFieldFormatter extends ViewsReferenceFieldFormatter {
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $form = parent::settingsForm($form, $form_state);
 
-    // Add new settings here
-
+    // Add new settings here.
     return $form;
   }
 
@@ -64,7 +62,7 @@ class ViewsReferenceOptionsFieldFormatter extends ViewsReferenceFieldFormatter {
     $elements = [];
 
     // We cannot use the parent function here so we need to replicate the build that occurs in viewsreference
-    // This could be avoided by having an independent function that processes the initial build
+    // This could be avoided by having an independent function that processes the initial build.
     foreach ($items as $delta => $item) {
       $view_name = $item->getValue()['target_id'];
       $display_id = $item->getValue()['display_id'];

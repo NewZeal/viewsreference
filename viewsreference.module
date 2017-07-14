@@ -1,6 +1,6 @@
 <?php
 /**
- * @file module functions for viewsreference
+ * @file Module functions for viewsreference.
  */
 
 /**
@@ -11,13 +11,13 @@ function viewsreference_theme($existing, $type, $theme, $path) {
     'viewsreference__view_title' => array(
       'template' => 'viewsreference--view-title',
       'render element' => 'variables',
-    )
+    ),
   );
 }
 
 /**
  * Implements HOOK_preprocess_HOOK().
- * 
+ *
  * @param $variables
  */
 function viewsreference_preprocess_viewsreference__view_title(&$variables) {

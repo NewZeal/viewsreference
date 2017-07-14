@@ -90,7 +90,6 @@ class ViewsReferenceItem extends EntityReferenceItem implements
     $schema = parent::schema($field_definition);
     $target_type = $field_definition->getSetting('target_type');
     $target_type_info = \Drupal::entityTypeManager()->getDefinition($target_type);
-    $properties = static::propertyDefinitions($field_definition)['target_id'];
     $schema['columns']['display_id'] = array(
       'description' => 'The ID of the display.',
       'type' => 'varchar_ascii',
@@ -114,7 +113,7 @@ class ViewsReferenceItem extends EntityReferenceItem implements
     $schema['columns']['data'] = array(
       'description' => 'Serialized data.',
       'type' => 'text',
-      'size' => 'big'
+      'size' => 'big',
     );
 
     $schema['indexes']['display_id'] = array('display_id');
