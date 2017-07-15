@@ -3,6 +3,7 @@
  * @file Module functions for viewsreference.
  */
 
+use Drupal\Core\Routing\RouteMatchInterface;
 /**
  * Implements hook_help().
  */
