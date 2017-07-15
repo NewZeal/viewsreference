@@ -29,6 +29,9 @@ CONFIGURATION
 In any entity in the Manage fields tab:
 When adding new fields a Views Reference field will now be available
 
+After adding a viewsreference field are the following additional settings:
+View display plugins to allow - which you can limit the Views plugin types that can be accessed from the field
+Preselect view options 
 
 MAINTAINERS
 -----------
