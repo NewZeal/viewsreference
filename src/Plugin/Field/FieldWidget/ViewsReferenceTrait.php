@@ -77,7 +77,14 @@ trait ViewsReferenceTrait {
       ),
     );
 
-    $element['title'] = array(
+    $element['options'] = array(
+      '#type' => 'details',
+      '#title' => t('Options'),
+      '#weight' => 10,
+    );
+
+    // Title and argument are the original options included in this module
+    $element['options']['title'] = array(
       '#title' => 'Include View Title',
       '#type' => 'checkbox',
       '#default_value' => isset($items[$delta]->getValue()['title']) ? $items[$delta]->getValue()['title'] : '',
@@ -89,7 +96,7 @@ trait ViewsReferenceTrait {
       ),
     );
 
-    $element['argument'] = array(
+    $element['options']['argument'] = array(
       '#title' => 'Argument',
       '#type' => 'textfield',
       '#default_value' => isset($items[$delta]->getValue()['argument']) ? $items[$delta]->getValue()['argument'] : '',
@@ -262,6 +269,26 @@ trait ViewsReferenceTrait {
       $views_list[$view->storage->id()] = $view->storage->label();
     }
     return $views_list;
+  }
+
+  /**
+   * Helper to process options array
+   *
+   * @param array $values
+   * @param array $form
+   * @param FormStateInterface $form_state
+   * @return array
+   */
+  public function massageValues(array $values, array $form, FormStateInterface $form_state) {
+    foreach ($values as $key => $value) {
+      if (is_array($value['options'])) {
+        foreach ($value['options'] as $ind => $option) {
+          $values[$key][$ind] = $option;
+        }
+        unset($value['options']);
+      }
+    }
+    return $values;
   }
 
 }
