@@ -68,7 +68,7 @@ class ViewsReferenceWidget extends EntityReferenceAutocompleteWidget {
    */
   public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
     $values = parent::massageFormValues($values, $form, $form_state);
-    // Options creates an array which we need to flatten
+    // Options creates an array which we need to flatten.
     $values = $this->massageValues($values, $form, $form_state);
     return $values;
   }

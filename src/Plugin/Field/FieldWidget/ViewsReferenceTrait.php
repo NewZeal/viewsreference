@@ -83,7 +83,7 @@ trait ViewsReferenceTrait {
       '#weight' => 10,
     );
 
-    // Title and argument are the original options included in this module
+    // Title and argument are the original options included in this module.
     $element['options']['title'] = array(
       '#title' => 'Include View Title',
       '#type' => 'checkbox',
@@ -272,12 +272,7 @@ trait ViewsReferenceTrait {
   }
 
   /**
-   * Helper to process options array
-   *
-   * @param array $values
-   * @param array $form
-   * @param FormStateInterface $form_state
-   * @return array
+   * Helper function to flatten options array.
    */
   public function massageValues(array $values, array $form, FormStateInterface $form_state) {
     foreach ($values as $key => $value) {
