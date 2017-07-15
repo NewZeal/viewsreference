@@ -171,8 +171,8 @@ class ViewsReferenceItem extends EntityReferenceItem implements
   public function fieldSettingsForm(array $form, FormStateInterface $form_state) {
     $form = parent::fieldSettingsForm($form, $form_state);
     $settings = $this->getSettings();
-    $preselect_views = $settings['preselect_views'];
-    $default_plugins = $settings['plugin_types'];
+    $preselect_views = isset($settings['preselect_views']) ? $settings['preselect_views'] : array();
+    $default_plugins = isset($settings['plugin_types']) ? $settings['plugin_types'] : array();
     $display_options = $this->getAllPluginList();
     $view_list = $this->getAllViewsNames();
     $form['plugin_types'] = [
