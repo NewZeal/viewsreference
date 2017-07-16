@@ -4,6 +4,7 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 /**
  * Implements hook_help().
  */
@@ -35,4 +36,16 @@ function viewsreference_theme($existing, $type, $theme, $path) {
  */
 function viewsreference_preprocess_viewsreference__view_title(&$variables) {
   $variables['title'] = $variables['variables']['#title'];
+}
+
+
+/**
+ * Implements hook_entity_bundle_field_info_alter().
+ */
+function viewsreference_entity_bundle_field_info_alter(&$fields, \EntityTypeInterface $entity_type, $bundle) {
+  foreach ($fields as $field) {
+    if ($field->getType() == 'viewsreference') {
+      $field->addConstraint('viewsreference_validation');
+    }
+  }
 }

@@ -59,16 +59,10 @@ trait ViewsReferenceTrait {
         $element['target_id']['#field_parents']) . '-' : '';
     $class .= $field_name . '-' . $delta . '-display-id';
 
-    $plugin_types = array_diff($items->getSetting('plugin_types'), array("0"));
-
-    if(empty($plugin_types)) {
-      $plugin_types = $options;
-    }
-
     $element['display_id'] = array(
       '#title' => 'Display Id',
       '#type' => 'select',
-      '#options' => $plugin_types,
+      '#options' => $options,
       '#default_value' => $default_value,
       '#weight' => 10,
       '#attributes' => array(
