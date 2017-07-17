@@ -4,6 +4,7 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 /**
  * Implements hook_help().
  */
@@ -36,3 +37,4 @@ function viewsreference_theme($existing, $type, $theme, $path) {
 function viewsreference_preprocess_viewsreference__view_title(&$variables) {
   $variables['title'] = $variables['variables']['#title'];
 }
+

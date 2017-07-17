@@ -74,6 +74,7 @@ trait ViewsReferenceTrait {
       '#attributes' => array(
         'class' => array(
           $class,
+          'viewsreference-display-id'
         ),
       ),
       '#states' => array(

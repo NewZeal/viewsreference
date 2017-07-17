@@ -161,6 +161,18 @@ class ViewsReferenceItem extends EntityReferenceItem implements
   /**
    * {@inheritdoc}
    */
+  public function isEmpty() {
+    $return = parent::isEmpty();
+    // Avoid loading the entity by first checking the 'display_id'.
+    if ($this->display_id === NULL || $this->display_id == '') {
+      return TRUE;
+    }
+    return $return;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function storageSettingsForm(array &$form, FormStateInterface $form_state, $has_data) {
     return parent::storageSettingsForm($form, $form_state, $has_data);
   }
