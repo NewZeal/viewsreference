@@ -53,7 +53,8 @@ trait ViewsReferenceTrait {
       $options = $this->getViewDisplayIds($items[$delta]->getValue()['target_id']);
     }
 
-    // We build a unique class name from field elements and any parent elements that might exist
+    // We build a unique class name from field elements
+    // And any parent elements that might exist
     // Which will be used to render the display id options in our ajax function.
     $class = !empty($element['target_id']['#field_parents']) ? implode('-',
         $element['target_id']['#field_parents']) . '-' : '';
@@ -135,7 +136,8 @@ trait ViewsReferenceTrait {
         $entity_id = $this->getEntityId($values[$field_name], $parents);
     }
 
-    // The following is relevant if our field is nested inside other fields, eg paragraph or field collection.
+    // The following is relevant if our field is nested inside other fields
+    // e.g. paragraph or field collection.
     if (count($parents) > 2) {
       $field_name = $parents[count($parents) - 3];
     }
@@ -160,7 +162,9 @@ trait ViewsReferenceTrait {
   }
 
   /**
-   * Helper function to get the current entity_id value from the values array based on parent array.
+   * Helper function to get the current entity_id value.
+   *
+   * The value is taken from the values array based on parent array.
    *
    * @param array $values
    *   Field array.
@@ -181,7 +185,9 @@ trait ViewsReferenceTrait {
   }
 
   /**
-   * Helper function to get the current entity_id value from the values array based on:
+   * Helper function to get the current entity_id value.
+   *
+   * The value is taken from the values array based on:
    * Parent array for select element.
    * Select adds an extra array level.
    *

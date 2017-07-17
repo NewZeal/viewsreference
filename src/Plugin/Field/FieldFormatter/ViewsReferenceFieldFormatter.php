@@ -116,7 +116,7 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
           $title = $view->getTitle();
           $title_render_array = array(
             '#theme' => 'viewsreference__view_title',
-            '#title' => $this->t($title),
+            '#title' => $title,
           );
         }
 
