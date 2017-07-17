@@ -7,7 +7,6 @@
 
 use Drupal\Core\Entity\Sql\SqlContentEntityStorage;
 
-
 /**
  * Update node fields already created with argument field.
  */
@@ -30,15 +29,17 @@ function viewsreference_update_8102() {
 }
 
 /**
- * Update all instances using viewsreference field type with new field. This is
- * called from hook_update_N() when new fields are added to the schema.
+ * Update all instances using viewsreference field type with new field.
+ *
+ * This is called from hook_update_N() when new fields are added to the schema.
  *
  * @param string $new_field_name
  *   The name of the new field to be added.
  */
 function viewsreference_update_viewsreference_fields($new_field_name) {
 
-  // Caches have to be cleared first to ensure new fields are detected in the code.
+  // Caches have to be cleared first to ensure new fields
+  // are detected in the code.
   drupal_flush_all_caches();
 
   // Retrieve list of all viewsreference fields mapped by entity type.
