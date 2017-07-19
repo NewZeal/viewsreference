@@ -46,8 +46,11 @@ Clean up install code: https://www.drupal.org/node/2862022
 
 8.x-1.0-rc1
 Apply Details form type to title and argument options to prepare
-sfor advanced options module
+for advanced options module
 Run codesniffer on code
 Fixes to views plugin filter: https://www.drupal.org/node/2857697
 Add error message for when no plugin available in a view
 Add Empty validation on display_id value
+
+8.x-1.0-rc1
+Fix incorrectly applied patch at https://www.drupal.org/node/2857697
