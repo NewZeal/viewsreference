@@ -20,12 +20,12 @@ trait ViewsReferenceTrait {
     switch ($element['target_id']['#type']) {
 
       case 'select':
-        $test = array('!value' => '_none');
+        $test = ['!value' => '_none'];
         $event = 'change';
         break;
 
       default:
-        $test = array('filled' => TRUE);
+        $test = ['filled' => TRUE];
         $event = 'viewsreference-select';
         break;
 
@@ -36,14 +36,14 @@ trait ViewsReferenceTrait {
 
     $element['target_id']['#target_type'] = 'view';
 
-    $element['target_id']['#ajax'] = array(
-      'callback' => array($this, 'getDisplayIds'),
+    $element['target_id']['#ajax'] = [
+      'callback' => [$this, 'getDisplayIds'],
       'event' => $event,
-      'progress' => array(
+      'progress' => [
         'type' => 'throbber',
         'message' => t('Getting display Ids...'),
-      ),
-    );
+      ],
+    ];
 
     $default_value = isset($items[$delta]->getValue()['display_id']) ? $items[$delta]->getValue()['display_id'] : '';
     if ($default_value == '') {
@@ -60,55 +60,55 @@ trait ViewsReferenceTrait {
         $element['target_id']['#field_parents']) . '-' : '';
     $class .= $field_name . '-' . $delta . '-display-id';
 
-    $element['display_id'] = array(
+    $element['display_id'] = [
       '#title' => 'Display Id',
       '#type' => 'select',
       '#options' => $options,
       '#default_value' => $default_value,
       '#weight' => 10,
-      '#attributes' => array(
-        'class' => array(
+      '#attributes' => [
+        'class' => [
           $class,
-          'viewsreference-display-id'
-        ),
-      ),
-      '#states' => array(
-        'visible' => array(
+          'viewsreference-display-id',
+        ],
+      ],
+      '#states' => [
+        'visible' => [
           ':input[name="' . $name . '"]' => $test,
-        ),
-      ),
-    );
+        ],
+      ],
+    ];
 
-    $element['options'] = array(
+    $element['options'] = [
       '#type' => 'details',
       '#title' => t('Options'),
       '#weight' => 10,
-    );
+    ];
 
     // Title and argument are the original options included in this module.
-    $element['options']['title'] = array(
+    $element['options']['title'] = [
       '#title' => 'Include View Title',
       '#type' => 'checkbox',
       '#default_value' => isset($items[$delta]->getValue()['title']) ? $items[$delta]->getValue()['title'] : '',
       '#weight' => 20,
-      '#states' => array(
-        'visible' => array(
+      '#states' => [
+        'visible' => [
           ':input[name="' . $name . '"]' => $test,
-        ),
-      ),
-    );
+        ],
+      ],
+    ];
 
-    $element['options']['argument'] = array(
+    $element['options']['argument'] = [
       '#title' => 'Argument',
       '#type' => 'textfield',
       '#default_value' => isset($items[$delta]->getValue()['argument']) ? $items[$delta]->getValue()['argument'] : '',
       '#weight' => 21,
-      '#states' => array(
-        'visible' => array(
+      '#states' => [
+        'visible' => [
           ':input[name="' . $name . '"]' => $test,
-        ),
-      ),
-    );
+        ],
+      ],
+    ];
 
     $element['#attached']['library'][] = 'viewsreference/viewsreference';
 
@@ -175,7 +175,7 @@ trait ViewsReferenceTrait {
    * @return array|bool
    *   The entity id.
    */
-  protected function getEntityId($values, $parents) {
+  protected function getEntityId(array $values, array $parents) {
     $key = array_shift($parents);
     $values = $values[$key];
     if (is_array($values)) {
@@ -239,7 +239,7 @@ trait ViewsReferenceTrait {
    */
   protected function getAllViewsDisplayIds() {
     $views = Views::getAllViews();
-    $options = array();
+    $options = [];
     foreach ($views as $view) {
       foreach ($view->get('display') as $display) {
         $options[$display['id']] = $display['display_title'];
@@ -253,8 +253,8 @@ trait ViewsReferenceTrait {
    */
   protected function getViewDisplayIds($entity_id) {
     $views = Views::getAllViews();
-    $options = array();
-    $view_plugins = array_diff($this->getFieldSetting('plugin_types'), array("0"));
+    $options = [];
+    $view_plugins = array_diff($this->getFieldSetting('plugin_types'), ["0"]);
     foreach ($views as $view) {
       if ($view->get('id') == $entity_id) {
         foreach ($view->get('display') as $display) {

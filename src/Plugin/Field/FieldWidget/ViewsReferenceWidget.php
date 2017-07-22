@@ -26,31 +26,10 @@ class ViewsReferenceWidget extends EntityReferenceAutocompleteWidget {
   /**
    * {@inheritdoc}
    */
-  public static function defaultSettings() {
-    return parent::defaultSettings();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function settingsForm(array $form, FormStateInterface $form_state) {
-    return parent::settingsForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function settingsSummary() {
-    return parent::settingsSummary();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $element = parent::formElement($items, $delta, $element, $form, $form_state);
 
-    $test = array('filled' => TRUE);
+    $test = ['filled' => TRUE];
     $element = $this->fieldElement($element, $items, $delta, $test);
 
     return $element;
