@@ -8,6 +8,7 @@
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_help().
@@ -34,8 +35,24 @@ function viewsreference_theme($existing, $type, $theme, $path) {
 }
 
 /**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function viewsreference_theme_suggestions_viewsreference__view_title(array $variables) {
+  $suggestions = [];
+
+  if (!empty($variables['variables']['#view']) && $variables['variables']['#view'] instanceof ViewExecutable) {
+    $suggestions = $variables['variables']['#view']->buildThemeFunctions('viewsreference__view_title');
+  }
+
+  return $suggestions;
+}
+
+/**
  * Implements hook_preprocess_viewsreference__view_title().
  */
-function viewsreference_preprocess_viewsreference__view_title(&$variables) {
-  $variables['title'] = $variables['variables']['#title'];
+function template_preprocess_viewsreference__view_title(&$variables) {
+  $variables['title'] = ['#markup' => $variables['variables']['#title']];
+  if (!empty($variables['variables']['#view'])) {
+    \Drupal::service('renderer')->addCacheableDependency($variables, $variables['variables']['#view']->storage);
+  }
 }
