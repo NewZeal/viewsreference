@@ -57,3 +57,6 @@ Fix incorrectly applied patch at https://www.drupal.org/node/2857697
 
 8.x-1.0-rc3
 Coding standards applied
+
+8.x-1.0
+Title theme suggestions: https://www.drupal.org/node/2901356
