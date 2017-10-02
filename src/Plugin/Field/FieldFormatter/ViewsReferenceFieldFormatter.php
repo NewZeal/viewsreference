@@ -120,24 +120,22 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
       $view->preExecute();
       $view->execute($display_id);
 
-      if (!empty($view->result) || !empty($view->empty)) {
-        if ($title) {
-          $title = $view->getTitle();
-          $title_render_array = [
-            '#theme' => $view->buildThemeFunctions('viewsreference__view_title'),
-            '#title' => $title,
-            '#view' => $view,
-          ];
-        }
-
-        if ($this->getSetting('plugin_types')) {
-          if ($title) {
-            $elements[$delta]['title'] = $title_render_array;
-          }
-        }
-
-        $elements[$delta]['contents'] = $view->buildRenderable($display_id);
+      if ($title) {
+        $title = $view->getTitle();
+        $title_render_array = [
+          '#theme' => $view->buildThemeFunctions('viewsreference__view_title'),
+          '#title' => $title,
+          '#view' => $view,
+        ];
       }
+
+      if ($this->getSetting('plugin_types')) {
+        if ($title) {
+          $elements[$delta]['title'] = $title_render_array;
+        }
+      }
+
+      $elements[$delta]['contents'] = $view->buildRenderable($display_id);
     }
 
     return $elements;
