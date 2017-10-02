@@ -74,11 +74,7 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
 
-    $elements = [
-      '#cache' => [
-        'max-age' => 0,
-      ],
-    ];
+    $elements = [];
 
     foreach ($items as $delta => $item) {
       $view_name = $item->getValue()['target_id'];
