@@ -112,7 +112,6 @@ class ViewsReferenceFieldFormatter extends FormatterBase {
         $view->setArguments($arguments);
       }
 
-      $view->build($display_id);
       $view->preExecute();
       $view->execute($display_id);
 
