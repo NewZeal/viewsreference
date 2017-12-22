@@ -67,4 +67,4 @@ Attachment areas fix: https://www.drupal.org/node/2910824
 
 8.x-1.2
 Remove view build step: https://www.drupal.org/project/viewsreference/issues/2923740
-
+Fix #states visibility: https://www.drupal.org/project/viewsreference/issues/2897999
