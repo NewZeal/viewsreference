@@ -151,7 +151,7 @@ trait ViewsReferenceTrait {
     $display_id_field_path = array_slice($trigger['#array_parents'], 0, -1);
     array_push($display_id_field_path, 'display_id');
     $display_id_field = NestedArray::getValue($form, $display_id_field_path);
-    $display_id_field['#options'] = $this->getViewDisplays($view_id);
+    $display_id_field['#options'] = $this->getViewDisplayIds($view_id);
 
     // Construct the html.
     $response = new AjaxResponse();
@@ -199,7 +199,7 @@ trait ViewsReferenceTrait {
   /**
    * Helper to get display ids for a particular View.
    */
-  protected function getViewDisplayIds($entity_id) {
+  protected function getViewDisplayIds($view_id) {
 
     $options = [];
     $view_plugins = array_diff($this->getFieldSetting('plugin_types'), ["0"]);
