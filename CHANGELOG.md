@@ -76,4 +76,3 @@ Argument cache: https://www.drupal.org/project/viewsreference/issues/3003900
 8.x-1.4
 Composer fix
 php sniffer fixes
-

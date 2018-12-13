@@ -60,7 +60,7 @@ trait ViewsReferenceTrait {
     $original_field_path = $field_path = array_merge($field_path, [
       $field_name,
       $delta,
-      'target_id'
+      'target_id',
       ]);
     $name = array_shift($field_path);
     foreach ($field_path as $field_path_element) {
