@@ -6,6 +6,7 @@
   "license": "GPL-2.0+",
   "homepage": "http://drupal.org/project/viewsreference",
   "minimum-stability": "dev",
+  "prefer-stable": true,
   "support": {
     "issues": "http://drupal.org/project/issues/viewsreference",
     "source": "http://cgit.drupalcode.org/viewsreference"
