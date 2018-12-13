@@ -61,7 +61,7 @@ trait ViewsReferenceTrait {
       $field_name,
       $delta,
       'target_id',
-      ]);
+    ]);
     $name = array_shift($field_path);
     foreach ($field_path as $field_path_element) {
       $name .= '[' . $field_path_element . ']';
