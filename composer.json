@@ -40,9 +40,8 @@
         "type:drupal-theme"
       ]
     }
-  }
+  },
   "conflict": {
     "drupal/viewsreferennce": "*"
-  },
-  "require": { }
+  }
 }
