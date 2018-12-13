@@ -72,3 +72,6 @@ JS translation: https://www.drupal.org/project/viewsreference/issues/2979298
 Check for null view in trait: https://www.drupal.org/project/viewsreference/issues/2953761
 Translate none option: https://www.drupal.org/project/viewsreference/issues/2958796
 Argument cache: https://www.drupal.org/project/viewsreference/issues/3003900
+
+8.x-1.4
+Remove travis scripts
