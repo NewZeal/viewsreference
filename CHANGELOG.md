@@ -67,7 +67,7 @@ Attachment areas fix: https://www.drupal.org/node/2910824
 Remove view build step: https://www.drupal.org/project/viewsreference/issues/2923740
 Fix #states visibility: https://www.drupal.org/project/viewsreference/issues/2897999
 
-8.x-1.2
+8.x-1.3
 JS translation: https://www.drupal.org/project/viewsreference/issues/2979298
 Check for null view in trait: https://www.drupal.org/project/viewsreference/issues/2953761
 Translate none option: https://www.drupal.org/project/viewsreference/issues/2958796
