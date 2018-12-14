@@ -21,6 +21,7 @@ case "$1" in
         cd ${TRAVIS_BUILD_DIR}/
         ls -la
         ls -la ../build/modules/contrib/
+        ./vendor/bin/phpunit -c ${DRUPAL_DIR}/core ./tests
         exit $?
         ;;
     *)
