@@ -50,6 +50,11 @@ class ViewsReferenceSelectWidget extends OptionsSelectWidget {
   /**
    * {@inheritdoc}
    */
+  protected function getEmptyLabel() {}
+
+  /**
+   * {@inheritdoc}
+   */
   public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
     // Options creates an array which we need to flatten.
     $values = $this->massageValues($values, $form, $form_state);
